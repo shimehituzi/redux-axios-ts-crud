@@ -42,8 +42,6 @@ const App: React.FC = () => {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    db.collection('samples').doc().set(formInput)
-    getState()
     setFormInput({
       ...formInput,
       [e.target.id]: e.target.value
@@ -51,10 +49,8 @@ const App: React.FC = () => {
   }
 
   const handleSubmit = () => {
-    setState([
-      ...state,
-      formInput
-    ])
+    db.collection('samples').doc().set(formInput)
+    getState()
     setFormInput(initialFormInput)
   }
 
