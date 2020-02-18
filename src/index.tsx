@@ -7,45 +7,44 @@ import { Provider, useSelector, useDispatch } from 'react-redux'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 
-type Movie = {
+type Sample = {
   id: number
-  name: string
-  derector: string
-  rating: number
+  title: string
+  description: string
 }
 
-type Movies = (Array<Movie>)
+type Samples = (Array<Sample>)
 
 type State = {
-  movies: Movies
+  samples: Samples
 }
 
 const initialState: State = {
-  movies: []
+  samples: []
 }
 
 const actionCreator = actionCreatorFactory()
 
-const moviesActions = {
-  getMovies: actionCreator.async<{}, State['movies']>('GET_MOVIES')
+const samplesActions = {
+  getSamples: actionCreator.async<{}, State['samples']>('GET_SAMPLES')
 }
 
-const getMovies = () => {
+const getSamples = () => {
   return (dispatch: Dispatch<Action<{}>>, _getState: () => State) => {
-    dispatch(moviesActions.getMovies.started({params: {}}))
-    axios.get('http://localhost:3001/movies')
+    dispatch(samplesActions.getSamples.started({params: {}}))
+    axios.get('http://localhost:3001/samples')
       .then((res) => {
-        dispatch(moviesActions.getMovies.done({result: res.data as Movies, params: {}}))
+        dispatch(samplesActions.getSamples.done({result: res.data as Samples, params: {}}))
       })
       .catch((reason) => {
-        dispatch(moviesActions.getMovies.failed({error: reason, params: {}}))
+        dispatch(samplesActions.getSamples.failed({error: reason, params: {}}))
         console.log(reason)
       })
   }
 }
 
-const moviesReducer = reducerWithInitialState(initialState.movies)
-  .case(moviesActions.getMovies.done, (_state, payload) => {
+const samplesReducer = reducerWithInitialState(initialState.samples)
+  .case(samplesActions.getSamples.done, (_state, payload) => {
     return payload.result
   })
 
@@ -53,30 +52,37 @@ type AppState = State
 
 const store = createStore(
   combineReducers<AppState>({
-    movies: moviesReducer
+    samples: samplesReducer
   }),
   applyMiddleware(thunk)
 )
 
 const App: React.FC = () => {
-  const movies = useSelector<AppState, AppState['movies']>( appState => appState.movies )
+  const samples = useSelector<AppState, AppState['samples']>( appState => appState.samples )
 
   const dispatch = useDispatch()
-  const handleGetMovies = useCallback(
-    () => dispatch(getMovies()), [dispatch]
+  const handleGetSamples = useCallback(
+    () => dispatch(getSamples()), [dispatch]
   )
 
   useEffect(() => {
-    handleGetMovies()
-  }, [handleGetMovies])
+    handleGetSamples()
+  }, [handleGetSamples])
 
   return (
     <React.Fragment>
-      <div>{
-        movies.map((movie) => {
-          return <div key={movie.id}>{movie.name}</div>
-        })
-      }</div>
+      <div>
+        {
+          samples.map((sample) => {
+            return (
+              <div key={sample.id}>
+                <div>{sample.title}</div>
+                <div>{sample.description}</div>
+              </div>
+            )
+          })
+        }
+      </div>
     </React.Fragment>
   )
 }
