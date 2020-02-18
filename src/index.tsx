@@ -1,5 +1,10 @@
-import React, { Fragment, useState } from 'react'
+import React, { useCallback, Dispatch, useEffect } from 'react'
 import { render } from 'react-dom'
+import { createStore, combineReducers, applyMiddleware, Action } from 'redux'
+import { actionCreatorFactory } from 'typescript-fsa'
+import { reducerWithInitialState } from 'typescript-fsa-reducers'
+import { Provider, useSelector, useDispatch } from 'react-redux'
+import thunk from 'redux-thunk'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -17,65 +22,90 @@ firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
 
-const App: React.FC = () => {
-  type Sample = {
-    title: string
-    description: string
-  }
+type Sample = {
+  id: number
+  title: string
+  description: string
+}
 
-  type Samples = (Array<Sample>)
+type Samples = (Array<Sample>)
 
-  const initialFormInput: Sample = {
-    title: '',
-    description: ''
-  }
+type State = {
+  samples: Samples
+}
 
-  const [state, setState] = useState<Samples>([]) 
-  const [formInput, setFormInput] = useState<Sample>(initialFormInput)
+const initialState: State = {
+  samples: []
+}
 
-  const getState = () => {
-    db.collection('samples')
-      .get().then((response) => {
-        const docs = response.docs.map(doc => doc.data() as Sample)
-        setState(docs)
+const actionCreator = actionCreatorFactory()
+
+const samplesActions = {
+  getSamples: actionCreator.async<{}, State['samples']>('GET_SAMPLES')
+}
+
+const getSamples = () => {
+  return (dispatch: Dispatch<Action<{}>>, _getState: () => State) => {
+    dispatch(samplesActions.getSamples.started({params: {}}))
+    db.collection('samples').get()
+      .then((res) => {
+        const docs = res.docs.map(doc => doc.data() as Sample)
+        dispatch(samplesActions.getSamples.done({result: docs, params: {}}))
+      })
+      .catch((reason) => {
+        dispatch(samplesActions.getSamples.failed({error: reason, params: {}}))
+        console.log(reason)
       })
   }
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormInput({
-      ...formInput,
-      [e.target.id]: e.target.value
-    })
-  }
+const samplesReducer = reducerWithInitialState(initialState.samples)
+  .case(samplesActions.getSamples.done, (_state, payload) => {
+    return payload.result
+  })
 
-  const handleSubmit = () => {
-    db.collection('samples').doc().set(formInput)
-    getState()
-    setFormInput(initialFormInput)
-  }
+type AppState = State
 
-  const mappingFunc = ():JSX.Element[] => (
-    state.map((elem, index) => {
-      return (
-        <Fragment key={index}>
-          <div>title: {elem.title}</div>
-          <div>description: {elem.description}</div>
-          <hr/>
-        </Fragment>
-      )
-    })
+const store = createStore(
+  combineReducers<AppState>({
+    samples: samplesReducer
+  }),
+  applyMiddleware(thunk)
+)
+
+const App: React.FC = () => {
+  const samples = useSelector<AppState, AppState['samples']>( appState => appState.samples )
+
+  const dispatch = useDispatch()
+  const handleGetSamples = useCallback(
+    () => dispatch(getSamples()), [dispatch]
   )
-  
+
+  useEffect(() => {
+    handleGetSamples()
+  }, [handleGetSamples])
 
   return (
-    <Fragment>
-      <button onClick={getState}>Get State</button>
-      <input id="title" value={formInput.title} onChange={handleChange}/>
-      <input id="description"value={formInput.description} onChange={handleChange}/>
-      <button onClick={handleSubmit}>Create</button>
-      <hr/> { mappingFunc() }
-    </Fragment>
+    <React.Fragment>
+      <div>
+        {
+          samples.map((sample) => {
+            return (
+              <div key={sample.id}>
+                <div>{sample.title}</div>
+                <div>{sample.description}</div>
+              </div>
+            )
+          })
+        }
+      </div>
+    </React.Fragment>
   )
 }
 
-render(<App/>, document.getElementById('root'))
+render(
+  <Provider store={store}>
+    <App/>
+  </Provider>
+  , document.getElementById('root')
+)
