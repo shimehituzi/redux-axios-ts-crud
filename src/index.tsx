@@ -5,7 +5,22 @@ import { actionCreatorFactory } from 'typescript-fsa'
 import { reducerWithInitialState } from 'typescript-fsa-reducers'
 import { Provider, useSelector, useDispatch } from 'react-redux'
 import thunk from 'redux-thunk'
-import axios from 'axios'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDIQeQwre7E4cUBkb--1G_jdxf1XWIpKoU",
+  authDomain: "shimehituzi-practice-d2c7c.firebaseapp.com",
+  databaseURL: "https://shimehituzi-practice-d2c7c.firebaseio.com",
+  projectId: "shimehituzi-practice-d2c7c",
+  storageBucket: "shimehituzi-practice-d2c7c.appspot.com",
+  messagingSenderId: "116370812428",
+  appId: "1:116370812428:web:d582bf886b678ebafe8829"
+}
+
+firebase.initializeApp(firebaseConfig)
+
+const db = firebase.firestore()
 
 type Sample = {
   id: number
@@ -32,9 +47,10 @@ const samplesActions = {
 const getSamples = () => {
   return (dispatch: Dispatch<Action<{}>>, _getState: () => State) => {
     dispatch(samplesActions.getSamples.started({params: {}}))
-    axios.get('http://localhost:3001/samples')
+    db.collection('samples').get()
       .then((res) => {
-        dispatch(samplesActions.getSamples.done({result: res.data as Samples, params: {}}))
+        const docs = res.docs.map(doc => doc.data() as Sample)
+        dispatch(samplesActions.getSamples.done({result: docs, params: {}}))
       })
       .catch((reason) => {
         dispatch(samplesActions.getSamples.failed({error: reason, params: {}}))
