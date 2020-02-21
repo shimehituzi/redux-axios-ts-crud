@@ -12,7 +12,7 @@ type State = {
 export const initialState: State = {
   data: [],
   form: {
-    id: -1,
+    id: 0,
     title: '',
     description: ''
   }

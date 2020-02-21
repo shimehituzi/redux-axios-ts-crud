@@ -10,5 +10,12 @@ const reducer = reducerWithInitialState(initialState)
   .case(actions.setForm, (state, payload) => {
     return { ...state, form: payload }
   })
+  .case(actions.createSample.done, (state, payload) => {
+    return {
+      ...state,
+      data: [ ...state.data, payload.result ],
+      form: initialState.form
+    }
+  })
 
 export default reducer

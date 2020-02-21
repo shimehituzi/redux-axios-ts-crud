@@ -16,6 +16,11 @@ const App: React.FC = () => {
       dispatch(samplesActions.setForm(value))
     }, [dispatch]
   )
+  const createSample = useCallback(
+    (form: State['samples']['form']) => {
+      dispatch(samplesOperations.createSample(form))
+    }, [dispatch]
+  )
 
   useEffect(() => {
     handleGetSamples()
@@ -28,11 +33,19 @@ const App: React.FC = () => {
     })
   }
 
+  const onCreateSampleFunc = () => {
+    createSample({
+      ...form,
+      id: samples.length + 1
+    })
+  }
+
   return (
     <React.Fragment>
       <div>
         <input onChange={onSetFormFunc} value={form.title} id="title"/>
         <input onChange={onSetFormFunc} value={form.description} id="description"/>
+        <button onClick={onCreateSampleFunc}>Create</button>
       </div>
       <div>
         {
