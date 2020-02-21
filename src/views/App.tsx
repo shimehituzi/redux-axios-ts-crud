@@ -4,7 +4,7 @@ import { State } from './state'
 import { samplesOperations } from '../state/datas/samples'
 
 const App: React.FC = () => {
-  const samples = useSelector<State, State['samples']>( appState => appState.samples )
+  const samples = useSelector<State, State['samples']['data']>( state => state.samples.data )
 
   const dispatch = useDispatch()
   const handleGetSamples = useCallback(
@@ -13,7 +13,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     handleGetSamples()
-    console.log("hi")
   }, [handleGetSamples])
 
   return (

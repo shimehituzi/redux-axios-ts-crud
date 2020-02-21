@@ -4,8 +4,12 @@ type Sample = {
   description: string
 }
 
-type State = (Array<Sample>)
+type State = {
+  data: (Array<Sample>)
+}
 
-export const initialState: State = []
+export const initialState: State = {
+  data: []
+}
 
 export default State

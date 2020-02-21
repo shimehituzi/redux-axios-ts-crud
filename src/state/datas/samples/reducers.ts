@@ -4,8 +4,8 @@ import actions from './actions'
 
 
 const reducer = reducerWithInitialState(initialState)
-  .case(actions.getSamples.done, (_state, payload) => {
-    return payload.result
+  .case(actions.getSamples.done, (state, payload) => {
+    return { ...state, data: payload.result }
   })
 
 export default reducer
