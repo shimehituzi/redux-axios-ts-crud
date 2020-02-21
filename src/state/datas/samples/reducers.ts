@@ -7,5 +7,8 @@ const reducer = reducerWithInitialState(initialState)
   .case(actions.getSamples.done, (state, payload) => {
     return { ...state, data: payload.result }
   })
+  .case(actions.setForm, (state, payload) => {
+    return { ...state, form: payload }
+  })
 
 export default reducer

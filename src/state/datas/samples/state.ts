@@ -6,10 +6,16 @@ type Sample = {
 
 type State = {
   data: (Array<Sample>)
+  form: Sample
 }
 
 export const initialState: State = {
-  data: []
+  data: [],
+  form: {
+    id: -1,
+    title: '',
+    description: ''
+  }
 }
 
 export default State
