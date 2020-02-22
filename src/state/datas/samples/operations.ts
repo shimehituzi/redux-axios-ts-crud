@@ -19,7 +19,7 @@ const createSample = (form: State['form']) => {
   return (dispatch: Dispatch, _getState: () => State) => {
     axios.post('http://localhost:3001/samples', { ...form })
       .then((res) => {
-        dispatch(actions.createSample.done({ result: res.data as State['form'] ,params: form}))
+        dispatch(actions.createSample.done({ result: res.data as State['data'][0] ,params: {}}))
       })
       .catch((reason) => {
         console.log(reason)
@@ -27,7 +27,7 @@ const createSample = (form: State['form']) => {
   }
 }
 
-const destroySample = (data: State['data'], id: State['form']['id']) => {
+const destroySample = (data: State['data'], id: State['data'][0]['id']) => {
   return (dispatch: Dispatch, _getState: () => State) => {
     axios.delete('http://localhost:3001/samples/' + id)
       .then(() => {

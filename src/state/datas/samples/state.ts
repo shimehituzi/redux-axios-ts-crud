@@ -6,13 +6,12 @@ type Sample = {
 
 type State = {
   data: (Array<Sample>)
-  form: Sample
+  form: (Omit<Sample, "id">)
 }
 
 export const initialState: State = {
   data: [],
   form: {
-    id: 0,
     title: '',
     description: ''
   }

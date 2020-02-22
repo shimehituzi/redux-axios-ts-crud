@@ -22,7 +22,7 @@ const App: React.FC = () => {
     }, [dispatch]
   )
   const handeleDestroySample = useCallback(
-    (data: State['samples']['data'], id: State['samples']['form']['id']) => {
+    (data: State['samples']['data'], id: State['samples']['data'][0]['id']) => {
       dispatch(samplesOperations.destroySample(data, id))
     }, [dispatch]
   )
@@ -39,14 +39,10 @@ const App: React.FC = () => {
   }
 
   const onCreateSampleFunc = () => {
-    const lastID = samples.slice().pop()?.id
-    handlecreateSample({
-      ...form,
-      id: lastID ? lastID+1 : 1
-    })
+    handlecreateSample(form)
   }
 
-  const onDestroySampleFunc = ( id: State['samples']['form']['id'] ) => () => {
+  const onDestroySampleFunc = ( id: State['samples']['data'][0]['id'] ) => () => {
     handeleDestroySample(samples, id)
   }
 
