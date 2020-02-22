@@ -48,7 +48,7 @@ const App: React.FC = () => {
     handlecreateSample(form)
   }
 
-  const onDestroySampleFunc = ( id: State['samples']['data'][0]['id'] ) => () => {
+  const onDestroySampleFunc = (id: State['samples']['data'][0]['id']) => () => {
     handeleDestroySample(samples, id)
   }
   
@@ -56,6 +56,13 @@ const App: React.FC = () => {
     handleSetUpdateForm({
       ...updateForm,
       [e.target.id]: e.target.value
+    })
+  }
+
+  const onEditFunc = (id: State['samples']['data'][0]['id']) => () => {
+    handleSetUpdateForm({
+      ...updateForm,
+      id: id
     })
   }
 
@@ -68,6 +75,7 @@ const App: React.FC = () => {
       </div>
       { updateForm.id !== -1 &&
       <div>
+        <button onClick={onEditFunc(-1)}>cloese</button>
         <input onChange={onSetUpdateFormFunc} value={updateForm.title} id="title"/>
         <input onChange={onSetUpdateFormFunc} value={updateForm.description} id="description"/>
         <button>{ `Update contents of id: ${updateForm.id}` }</button>
@@ -78,12 +86,14 @@ const App: React.FC = () => {
           samples.map((sample) => {
             return (
               <div key={sample.id}>
-                <div>
-                  <span>{sample.id}</span>
-                  <button onClick={onDestroySampleFunc(sample.id)}>X</button>
-                </div>
+                <hr/>
+                <div>{sample.id}</div>
                 <div>{sample.title}</div>
                 <div>{sample.description}</div>
+                <div>
+                  <button onClick={onEditFunc(sample.id)}>Edit</button>
+                  <button onClick={onDestroySampleFunc(sample.id)}>Destroy</button>
+                </div>
               </div>
             )
           })
