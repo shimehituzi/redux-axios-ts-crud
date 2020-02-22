@@ -40,8 +40,21 @@ const destroySample = (data: State['data'], id: State['data'][0]['id']) => {
   }
 }
 
+const updateSample = (data: State['data'], updateForm: State['updateForm']) => {
+  return (dispatch: Dispatch, _getState: () => State) => {
+    axios.put('http://localhost:3001/samples/' + updateForm.id, { ...updateForm })
+      .then(() => {
+        dispatch(actions.updateSample.done({
+          result: data.map(elem =>  elem.id === updateForm.id ? updateForm : elem),
+          params: {}
+        }))
+      })
+  }
+}
+
 export default {
   getSamples,
   createSample,
-  destroySample
+  destroySample,
+  updateSample,
 }

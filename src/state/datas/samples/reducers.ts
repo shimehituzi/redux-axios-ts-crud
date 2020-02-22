@@ -20,5 +20,15 @@ const reducer = reducerWithInitialState(initialState)
   .case(actions.destroySample.done, (state, payload) => {
     return { ...state, data: payload.result }
   })
+  .case(actions.setUpdateForm, (state, payload) => {
+    return { ...state, updateForm: payload }
+  })
+  .case(actions.updateSample.done, (state, payload) => {
+    return {
+      ...state,
+      data: payload.result,
+      updateForm: initialState.updateForm
+    }
+  })
 
 export default reducer
