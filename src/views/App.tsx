@@ -66,17 +66,22 @@ const App: React.FC = () => {
         <input onChange={onSetFormFunc} value={form.description} id="description"/>
         <button onClick={onCreateSampleFunc}>Create</button>
       </div>
+      { updateForm.id !== -1 &&
       <div>
         <input onChange={onSetUpdateFormFunc} value={updateForm.title} id="title"/>
         <input onChange={onSetUpdateFormFunc} value={updateForm.description} id="description"/>
-        <button>Update</button>
+        <button>{ `Update contents of id: ${updateForm.id}` }</button>
       </div>
+      }
       <div>
         {
           samples.map((sample) => {
             return (
               <div key={sample.id}>
-                <div><button onClick={onDestroySampleFunc(sample.id)}>X</button></div>
+                <div>
+                  <span>{sample.id}</span>
+                  <button onClick={onDestroySampleFunc(sample.id)}>X</button>
+                </div>
                 <div>{sample.title}</div>
                 <div>{sample.description}</div>
               </div>
