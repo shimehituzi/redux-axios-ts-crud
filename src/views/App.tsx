@@ -32,6 +32,11 @@ const App: React.FC = () => {
       dispatch(samplesActions.setUpdateForm(value))
     }, [dispatch]
   )
+  const handleUpdateSample = useCallback(
+    (data: State['samples']['data'], updateForm: State['samples']['updateForm']) => {
+      dispatch(samplesOperations.updateSample(data, updateForm))
+    }, [dispatch]
+  )
 
   useEffect(() => {
     handleGetSamples()
@@ -66,6 +71,10 @@ const App: React.FC = () => {
     })
   }
 
+  const onUpdateSampleFunc = () => {
+    handleUpdateSample(samples, updateForm)
+  }
+
   return (
     <React.Fragment>
       <div>
@@ -78,7 +87,7 @@ const App: React.FC = () => {
         <button onClick={onEditFunc(-1)}>cloese</button>
         <input onChange={onSetUpdateFormFunc} value={updateForm.title} id="title"/>
         <input onChange={onSetUpdateFormFunc} value={updateForm.description} id="description"/>
-        <button>{ `Update contents of id: ${updateForm.id}` }</button>
+        <button onClick={onUpdateSampleFunc}>{ `Update contents of id: ${updateForm.id}` }</button>
       </div>
       }
       <div>

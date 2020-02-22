@@ -9,6 +9,7 @@ const actions = {
   createSample: actionCreator.async<{}, State['data'][0]>('CREATE_SAMPLES'),
   destroySample: actionCreator.async<{}, State['data']>('DESTROY_SAMPLE'),
   setUpdateForm: actionCreator<State['updateForm']>('SET_UPDATE_FORM'),
+  updateSample: actionCreator.async<{}, State['data']>('UPDATE_SAMPLE'),
 }
 
 export default actions
