@@ -6,7 +6,7 @@ const actionCreator = actionCreatorFactory()
 const actions = {
   getSamples: actionCreator.async<{}, State['data']>('GET_SAMPLES'),
   setForm: actionCreator<State['form']>('SET_FORM'),
-  createSample: actionCreator.async<State['form'], State['form']>('CREATE_SAMPLES'),
+  createSample: actionCreator.async<{}, State['data'][0]>('CREATE_SAMPLES'),
   destroySample: actionCreator.async<{}, State['data']>('DESTROY_SAMPLE'),
 }
 
