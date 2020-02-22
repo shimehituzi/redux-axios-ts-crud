@@ -17,5 +17,8 @@ const reducer = reducerWithInitialState(initialState)
       form: initialState.form
     }
   })
+  .case(actions.destroySample.done, (state, payload) => {
+    return { ...state, data: payload.result }
+  })
 
 export default reducer

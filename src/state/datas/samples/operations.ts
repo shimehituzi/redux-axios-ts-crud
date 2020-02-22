@@ -27,7 +27,21 @@ const createSample = (form: State['form']) => {
   }
 }
 
+const destroySample = (data: State['data'], id: State['form']['id']) => {
+  return (dispatch: Dispatch, _getState: () => State) => {
+    axios.delete('http://localhost:3001/samples/' + id)
+      .then(() => {
+        const newData = data.filter(elem => elem.id !== id)
+        dispatch(actions.destroySample.done({ result: newData, params: {} }))
+      })
+      .catch((reason) => {
+        console.log(reason)
+      })
+  }
+}
+
 export default {
   getSamples,
-  createSample
+  createSample,
+  destroySample
 }

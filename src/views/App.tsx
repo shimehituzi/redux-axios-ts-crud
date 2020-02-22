@@ -16,9 +16,14 @@ const App: React.FC = () => {
       dispatch(samplesActions.setForm(value))
     }, [dispatch]
   )
-  const createSample = useCallback(
+  const handlecreateSample = useCallback(
     (form: State['samples']['form']) => {
       dispatch(samplesOperations.createSample(form))
+    }, [dispatch]
+  )
+  const handeleDestroySample = useCallback(
+    (data: State['samples']['data'], id: State['samples']['form']['id']) => {
+      dispatch(samplesOperations.destroySample(data, id))
     }, [dispatch]
   )
 
@@ -34,10 +39,15 @@ const App: React.FC = () => {
   }
 
   const onCreateSampleFunc = () => {
-    createSample({
+    const lastID = samples.slice().pop()?.id
+    handlecreateSample({
       ...form,
-      id: samples.length + 1
+      id: lastID ? lastID+1 : 1
     })
+  }
+
+  const onDestroySampleFunc = ( id: State['samples']['form']['id'] ) => () => {
+    handeleDestroySample(samples, id)
   }
 
   return (
@@ -52,6 +62,7 @@ const App: React.FC = () => {
           samples.map((sample) => {
             return (
               <div key={sample.id}>
+                <div><button onClick={onDestroySampleFunc(sample.id)}>X</button></div>
                 <div>{sample.title}</div>
                 <div>{sample.description}</div>
               </div>
