@@ -9,8 +9,8 @@ $ npm install -g json-server
 
 ### git clone
 ```sh
-$ git clone git@github.com:tuseic/TodoApp-react-redux-thunk-hooks-typescript.git
-$ cd TodoApp-react-redux-thunk-hooks-typescript
+$ git clone git@github.com:tuseic/PracticeTodoApp-react-redux-thunk-hooks-typescript.git
+$ cd PracticeTodoApp-react-redux-thunk-hooks-typescript
 ```
 
 ### json server を起動
