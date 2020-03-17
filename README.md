@@ -7,8 +7,8 @@ $ npm install -g json-server
 
 ### git clone
 ```sh
-$ git clone
-$ cd 
+$ git clone git@github.com:tuseic/TodoApp-react-redux-thunk-hooks-typescript.git
+$ cd TodoApp-react-redux-thunk-hooks-typescript
 ```
 
 ## yarn start
@@ -17,7 +17,7 @@ $ yarn
 $ yarn start
 ```
 
-## json server を起動
+## json server を起動 （別ウィンドウなどで）
 ```sh
 $ json-server -w db_json/db.json -p 3001
 ```
