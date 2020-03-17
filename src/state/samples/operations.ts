@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
+import axios from 'axios'
 import State from './state'
 import actions from './actions'
-import axios from 'axios'
 
 const getSamples = () => {
   return (dispatch: Dispatch, _getState: () => State) => {
