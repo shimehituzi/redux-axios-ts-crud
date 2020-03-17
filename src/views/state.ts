@@ -1,3 +1,3 @@
-import { RootState } from '../state/datas'
+import { RootState } from '../state'
 
 export type State = RootState
