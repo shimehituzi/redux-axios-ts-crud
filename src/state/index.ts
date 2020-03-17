@@ -1,7 +1,7 @@
-import { samplesState, samplesReducer } from './samples'
+import { SamplesState, samplesReducer } from './samples'
 
 export type RootState = {
-  samples: samplesState
+  samples: SamplesState
 }
 
 export const rootReducers = {
