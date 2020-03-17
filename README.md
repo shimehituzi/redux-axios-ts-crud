@@ -1,6 +1,8 @@
-# 使い方
+# 練習用のCRUDなTODOアプリケーション
 
-## json-server をインストール
+## 使用法
+
+### json-server をインストール
 ```sh
 $ npm install -g json-server
 ```
@@ -11,12 +13,12 @@ $ git clone git@github.com:tuseic/TodoApp-react-redux-thunk-hooks-typescript.git
 $ cd TodoApp-react-redux-thunk-hooks-typescript
 ```
 
-## json server を起動
+### json server を起動
 ```sh
 $ json-server -w db_json/db.json -p 3001
 ```
 
-## yarn start （別ウィンドウなどで）
+### yarn start （別ウィンドウなどで）
 ```sh 
 $ yarn
 $ yarn start
